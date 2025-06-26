@@ -30,7 +30,8 @@ def load_ndvi_series(folder):
     for f in files:
         with rasterio.open(f) as src:
             ndvi = src.read(1)  # single-band NDVI
-            ndvi_images.append(ndvi)
+            ndvi_resized = resize(ndvi, (256, 256), anti_aliasing=True, preserve_range=True)
+            ndvi_images.append(ndvi_resized)
 
     stack = np.stack(ndvi_images, axis=0)  # (T, H, W)
     return stack
